@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            name="WebGL Vertex Shader Editor"
+            extensions="vsh,vshader"
+            icon="icons/opengl.png"
+            contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
+            class="com.petrbroz.webglsl.editors.VertexShaderEditor"
+            id="com.petrbroz.webglsl.editors.VertexShaderEditor">
+      </editor>
+      <editor
+            class="com.petrbroz.webglsl.editors.FragmentShaderEditor"
+            contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
+            extensions="fsh,fshader"
+            icon="icons/opengl.png"
+            id="com.petrbroz.webglsl.editors.FragmentShaderEditor"
+            name="WebGL Fragment Shader Editor">
+      </editor>
+   </extension>
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <category
+            name="WebGL"
+            id="com.petrbroz.webglsl">
+      </category>
+      <wizard
+            name="Vertex Shader File"
+            icon="icons/opengl.png"
+            category="com.petrbroz.webglsl"
+            class="com.petrbroz.webglsl.wizards.VertexShaderWizard"
+            id="com.petrbroz.webglsl.wizards.VertexShaderWizard">
+      </wizard>
+      <wizard
+            category="com.petrbroz.webglsl"
+            class="com.petrbroz.webglsl.wizards.FragmentShaderWizard"
+            icon="icons/opengl.png"
+            id="com.petrbroz.webglsl.wizards.FragmentShaderWizard"
+            name="Fragment Shader File">
+      </wizard>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            name="Shader Preferences"
+            class="com.petrbroz.webglsl.preferences.ShaderPreferencePage"
+            id="com.petrbroz.webglsl.preferences.VertexShaderPreferencePage">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="com.petrbroz.webglsl.preferences.PreferenceInitializer">
+      </initializer>
+   </extension>
+
+</plugin>

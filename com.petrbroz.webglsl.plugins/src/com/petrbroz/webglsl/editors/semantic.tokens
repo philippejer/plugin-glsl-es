@@ -1,0 +1,14 @@
+gl_FragCoord
+gl_FrontFacing
+gl_FragColor
+gl_FragData
+gl_PointCoord
+gl_MaxVertexAttribs
+gl_MaxVertexUniformVectors
+gl_MaxVaryingVectors
+gl_MaxVertexTextureImageUnits
+gl_MaxCombinedTextureImageUnits
+gl_MaxTextureImageUnits
+gl_MaxFragmentUniformVectors
+gl_MaxDrawBuffers
+gl_DepthRange
