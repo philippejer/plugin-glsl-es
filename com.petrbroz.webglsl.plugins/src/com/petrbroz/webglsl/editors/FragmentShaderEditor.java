@@ -12,26 +12,14 @@ public class FragmentShaderEditor extends TextEditor implements
 
 	public FragmentShaderEditor() {
 		super();
-		setSourceViewerConfiguration(new FragmentShaderConfiguration());
-
+		setSourceViewerConfiguration(new ShaderConfiguration());
+		setDocumentProvider(new ShaderDocumentProvider());
 		Plugin.getDefault().getPreferenceStore()
 				.addPropertyChangeListener(this);
 	}
 
 	@Override
-	public void dispose() {
-		super.dispose();
-	}
-
-	@Override
-	protected void handlePreferenceStoreChanged(PropertyChangeEvent event) {
-		// TODO Auto-generated method stub
-		super.handlePreferenceStoreChanged(event);
-	}
-
-	@Override
 	protected boolean affectsTextPresentation(PropertyChangeEvent event) {
-
 		boolean affect = false;
 		for (int i = 0; i < PreferenceConstants.PREFERENCES.length; i++) {
 			affect = affect

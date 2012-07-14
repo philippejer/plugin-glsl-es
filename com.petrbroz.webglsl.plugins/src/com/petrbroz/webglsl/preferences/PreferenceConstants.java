@@ -3,6 +3,7 @@ package com.petrbroz.webglsl.preferences;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.RGB;
 
+import com.petrbroz.webglsl.editors.ShaderConfiguration;
 import com.petrbroz.webglsl.Messages;
 
 /**
@@ -10,17 +11,17 @@ import com.petrbroz.webglsl.Messages;
  */
 public class PreferenceConstants {
 
-	public static String DEFAULT[] = { Messages.Label_Default,
+	public static String DEFAULT[] = { ShaderConfiguration.DEFAULT_TOKEN,
 			Messages.Label_DefaultColor, Messages.Label_DefaultStyle };
-	public static String COMMENT[] = { Messages.Label_Comments,
+	public static String COMMENT[] = { ShaderConfiguration.COMMENT_TOKEN,
 			Messages.Label_CommentColor, Messages.Label_CommentStyle };
-	public static String TYPE[] = { Messages.Label_Types,
+	public static String TYPE[] = { ShaderConfiguration.TYPE_TOKEN,
 			Messages.Label_TypeColor, Messages.Label_TypeStyle };
-	public static String SEMANTIC[] = { Messages.Label_Semantics,
+	public static String SEMANTIC[] = { ShaderConfiguration.SEMANTIC_TOKEN,
 			Messages.Label_SemanticColor, Messages.Label_SemanticStyle };
-	public static String FUNCTION[] = { Messages.Label_Functions,
+	public static String FUNCTION[] = { ShaderConfiguration.FUNCTION_TOKEN,
 			Messages.Label_FunctionColor, Messages.Label_FunctionStyle };
-	public static String LANGUAGE[] = { Messages.Label_Keywords,
+	public static String LANGUAGE[] = { ShaderConfiguration.KEYWORD_TOKEN,
 			Messages.Label_KeywordColor, Messages.Label_KeywordStyle };
 
 	public static String PREFERENCES[][] = { COMMENT, DEFAULT, TYPE, SEMANTIC,

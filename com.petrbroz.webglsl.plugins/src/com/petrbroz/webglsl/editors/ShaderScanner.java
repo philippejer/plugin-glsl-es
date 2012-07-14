@@ -13,29 +13,46 @@ import org.eclipse.jface.text.rules.MultiLineRule;
 import org.eclipse.jface.text.rules.RuleBasedScanner;
 import org.eclipse.jface.text.rules.WordRule;
 
-import com.petrbroz.webglsl.Messages;
-
 public class ShaderScanner extends RuleBasedScanner {
 
-	static char ESCAPE_CHARS[] = { '\n', ' ', '.', ';', ',', '(', ')', '[', ']' };
-	String language[];
-	String types[];
-	String functions[];
-	String semantics[];
-	String[] keys = null;
+	protected static char ESCAPE_CHARS[] = { '\n', ' ', '.', ';', ',', '(',
+			')', '[', ']' };
+	protected static String FUNCTIONS[];
+	protected static String KEYWORDS[];
+	protected static String SEMANTICS[];
+	protected static String TYPES[];
+	protected static String KEYS[];
+
+	static {
+		FUNCTIONS = readResourceStrings("functions");
+		KEYWORDS = readResourceStrings("keywords");
+		SEMANTICS = readResourceStrings("semantics");
+		TYPES = readResourceStrings("types");
+
+		int f = FUNCTIONS.length;
+		int k = KEYWORDS.length;
+		int s = SEMANTICS.length;
+		int t = TYPES.length;
+		KEYS = new String[f + k + s + t];
+		System.arraycopy(FUNCTIONS, 0, KEYS, 0, f);
+		System.arraycopy(KEYWORDS, 0, KEYS, f, k);
+		System.arraycopy(SEMANTICS, 0, KEYS, f + k, s);
+		System.arraycopy(TYPES, 0, KEYS, f + k + s, t);
+	}
 
 	/**
 	 * 
 	 */
 	public ShaderScanner() {
 		super();
+		setScannerRules();
 	}
 
-	public String[] readTokens(String tokenFile) {
+	private static String[] readResourceStrings(String inputFile) {
 		String line;
 		Set<String> results = new HashSet<String>();
 		try {
-			InputStream is = getClass().getResourceAsStream(tokenFile);
+			InputStream is = ShaderScanner.class.getResourceAsStream(inputFile);
 			BufferedReader br = new BufferedReader(new InputStreamReader(is));
 			while ((line = br.readLine()) != null) {
 				results.add(line);
@@ -46,31 +63,26 @@ public class ShaderScanner extends RuleBasedScanner {
 		return results.toArray(new String[0]);
 	}
 
-	public void setShaderRules() {
-		if (keys == null) {
-			keys = new String[language.length + types.length + functions.length
-					+ semantics.length];
-			System.arraycopy(language, 0, keys, 0, language.length);
-			System.arraycopy(types, 0, keys, language.length, types.length);
-			System.arraycopy(functions, 0, keys,
-					language.length + types.length, functions.length);
-			System.arraycopy(semantics, 0, keys, language.length + types.length
-					+ functions.length, semantics.length);
-		}
-
-		IToken commentToken = TokenManager.getToken(Messages.Label_Comments);
-		IToken languageToken = TokenManager.getToken(Messages.Label_Keywords);
-		IToken typeToken = TokenManager.getToken(Messages.Label_Types);
-		IToken functionToken = TokenManager.getToken(Messages.Label_Functions);
-		IToken semanticToken = TokenManager.getToken(Messages.Label_Semantics);
-		IToken defaultToken = TokenManager.getToken(Messages.Label_Default);
+	protected void setScannerRules() {
+		IToken commentToken = TokenManager
+				.getToken(ShaderConfiguration.COMMENT_TOKEN);
+		IToken functionToken = TokenManager
+				.getToken(ShaderConfiguration.FUNCTION_TOKEN);
+		IToken keywordToken = TokenManager
+				.getToken(ShaderConfiguration.KEYWORD_TOKEN);
+		IToken semanticToken = TokenManager
+				.getToken(ShaderConfiguration.SEMANTIC_TOKEN);
+		IToken typeToken = TokenManager
+				.getToken(ShaderConfiguration.TYPE_TOKEN);
+		IToken defaultToken = TokenManager
+				.getToken(ShaderConfiguration.DEFAULT_TOKEN);
 
 		IRule[] rules = new IRule[3];
 		rules[0] = new MultiLineRule("/*", "*/", commentToken);
 		rules[1] = new EndOfLineRule("//", commentToken);
 		rules[2] = new WordRule(new IWordDetector() {
 
-			BitSet set = new BitSet(keys.length);
+			BitSet set = new BitSet(KEYS.length);
 
 			int index = 0;
 
@@ -79,9 +91,8 @@ public class ShaderScanner extends RuleBasedScanner {
 				set.clear();
 				index = 1;
 				boolean start = false;
-				for (int i = 0; i < keys.length; i++) {
-
-					if (keys[i].charAt(0) == c) {
+				for (int i = 0; i < KEYS.length; i++) {
+					if (KEYS[i].charAt(0) == c) {
 						set.set(i);
 						start = true;
 					}
@@ -93,9 +104,9 @@ public class ShaderScanner extends RuleBasedScanner {
 			public boolean isWordPart(char c) {
 				if (set.isEmpty())
 					return isNotEscChar(c);
-				for (int i = 0; i < keys.length; i++) {
-					if (keys[i].length() > index && set.get(i)) {
-						if (keys[i].charAt(index) != c)
+				for (int i = 0; i < KEYS.length; i++) {
+					if (KEYS[i].length() > index && set.get(i)) {
+						if (KEYS[i].charAt(index) != c)
 							set.clear(i);
 					} else
 						set.clear(i);
@@ -113,17 +124,14 @@ public class ShaderScanner extends RuleBasedScanner {
 
 		}, defaultToken);
 
-		for (int i = 0; i < language.length; i++)
-			((WordRule) rules[2]).addWord(language[i], languageToken);
-
-		for (int i = 0; i < types.length; i++)
-			((WordRule) rules[2]).addWord(types[i], typeToken);
-
-		for (int i = 0; i < semantics.length; i++)
-			((WordRule) rules[2]).addWord(semantics[i], semanticToken);
-
-		for (int i = 0; i < functions.length; i++)
-			((WordRule) rules[2]).addWord(functions[i], functionToken);
+		for (int i = 0; i < FUNCTIONS.length; i++)
+			((WordRule) rules[2]).addWord(FUNCTIONS[i], functionToken);
+		for (int i = 0; i < KEYWORDS.length; i++)
+			((WordRule) rules[2]).addWord(KEYWORDS[i], keywordToken);
+		for (int i = 0; i < SEMANTICS.length; i++)
+			((WordRule) rules[2]).addWord(SEMANTICS[i], semanticToken);
+		for (int i = 0; i < TYPES.length; i++)
+			((WordRule) rules[2]).addWord(TYPES[i], typeToken);
 
 		setRules(rules);
 	}

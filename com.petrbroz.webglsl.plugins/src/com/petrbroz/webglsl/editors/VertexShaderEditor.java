@@ -12,21 +12,10 @@ public class VertexShaderEditor extends TextEditor implements
 
 	public VertexShaderEditor() {
 		super();
-		setSourceViewerConfiguration(new VertexShaderConfiguration());
-
+		setSourceViewerConfiguration(new ShaderConfiguration());
+		setDocumentProvider(new ShaderDocumentProvider());
 		Plugin.getDefault().getPreferenceStore()
 				.addPropertyChangeListener(this);
-	}
-
-	@Override
-	public void dispose() {
-		super.dispose();
-	}
-
-	@Override
-	protected void handlePreferenceStoreChanged(PropertyChangeEvent event) {
-		// TODO Auto-generated method stub
-		super.handlePreferenceStoreChanged(event);
 	}
 
 	@Override
