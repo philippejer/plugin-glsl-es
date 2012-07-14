@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="com.petrbroz.webglsl"
+      label="WebGL Shader Language Support"
+      version="1.0.0.0">
+
+   <description>
+      WebGL shader language plugin for Eclipse.
+   </description>
+
+   <plugin
+         id="com.petrbroz.webglsl.plugins"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>
